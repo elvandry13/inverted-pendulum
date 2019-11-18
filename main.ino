@@ -1,4 +1,5 @@
 #include <digitalWriteFast.h>
+
 volatile int temp, counter = 0;
 unsigned long int milli_time;
 float jarak, jarak2;
@@ -16,31 +17,29 @@ float error, lasterror;
 float error2;
 float PWM, fpwm, sp;
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   Serial.println("CLEARDATA");
   Serial.println("LABEL,Computer Time,Time (Mili Sec.),Sudut");
-  for(int i=5;i<9;i++){
-   pinMode(i,OUTPUT);
-   }
-   for(int i=5;i<9;i++){
+  for(int i=5;i<9;i++)
+  {
+    pinMode(i,OUTPUT);
+  }
+  for(int i=5;i<9;i++)
+  {
    digitalWrite(i,LOW);
-   }
+  }
   pinMode(2, INPUT_PULLUP); 
   pinMode(3, INPUT_PULLUP);
   attachInterrupt(0, ai0, RISING);   
   attachInterrupt(1, ai1, RISING);
-  pinModeFast(30, INPUT);
-  pinModeFast(31, INPUT);
-  pinModeFast(32, INPUT);
-  pinModeFast(33, INPUT);
-  pinModeFast(34, INPUT);
-  pinModeFast(35, INPUT);
-  pinModeFast(36, INPUT);
-  pinModeFast(37, INPUT);
-  pinModeFast(38, INPUT);
-  pinModeFast(39, INPUT);
-  for(int i=30;i<40;i++){
+  for(int i=30;i<40;i++)
+  {
+    pinModeFast(i, INPUT);
+  }
+  for(int i=30;i<40;i++)
+  {
     digitalWriteFast(i, LOW);
   }
   fpwm = 10;
@@ -51,7 +50,8 @@ void setup() {
   KP2 = 15;
 }
 
-void Rotary(){
+void Rotary()
+{
   const int b0 = digitalReadFast(30);
   const int b1 = digitalReadFast(31);
   const int b2 = digitalReadFast(32);
@@ -62,42 +62,49 @@ void Rotary(){
   const int b7 = digitalReadFast(37);
   const int b8 = digitalReadFast(38);
   const int b9 = digitalReadFast(39);
-    byte c0 = b0;
-    byte c1 = c0 + b1;
+  byte c0 = b0;
+  byte c1 = c0 + b1;
     if (c1==2){c1= 0;}
-    byte c2 = c1 + b2;
-     if (c2==2){c2= 0;}
-    byte c3 = c2 + b3;
-     if (c3==2){c3= 0;}
-    byte c4 = c3 + b4;
-     if (c4==2){c4= 0;}
-    byte c5 = c4 + b5;
-     if (c5==2){c5= 0;}
-    byte c6 = c5 + b6;
-     if (c6==2){c6= 0;}
-    byte c7 = c6 + b7;
-     if (c7==2){c7= 0;}
-    byte c8 = c7 + b8;
-     if (c8==2){c8= 0;}
-    byte c9 = c8 + b9;
-     if (c9==2){c9= 0;}
+  byte c2 = c1 + b2;
+    if (c2==2){c2= 0;}
+  byte c3 = c2 + b3;
+    if (c3==2){c3= 0;}
+  byte c4 = c3 + b4;
+    if (c4==2){c4= 0;}
+  byte c5 = c4 + b5;
+    if (c5==2){c5= 0;}
+  byte c6 = c5 + b6;
+    if (c6==2){c6= 0;}
+  byte c7 = c6 + b7;
+    if (c7==2){c7= 0;}
+  byte c8 = c7 + b8;
+    if (c8==2){c8= 0;}
+  byte c9 = c8 + b9;
+    if (c9==2){c9= 0;}
   val = c0*512 + c1*256 + c2*128 + c3*64 + c4*32 + c5*16 + c6*8 + c7*4 + c8*2 + c9*1 ;
   Angle = 360.0/1024*val;
   
-  if(Angle >= 0){
+  if(Angle >= 0)
+  {
     Angle2 = Angle - 180;
   }
-  if(Angle < 0){
+
+  if(Angle < 0)
+  {
     Angle2 = Angle + 180;
   }
-      if (Angle > 180) {
-      Angle = Angle - 360;
-      Angle2 = Angle + 180;
-      }
-      if (Angle < -180) {
-      Angle = Angle + 360;
-      Angle2 = Angle - 180;
-      }
+  
+  if (Angle > 180)
+  {
+    Angle = Angle - 360;
+    Angle2 = Angle + 180;
+  }
+
+  if (Angle < -180) 
+  {
+    Angle = Angle + 360;
+    Angle2 = Angle - 180;
+  }
 }
 
 void PID()
@@ -110,27 +117,37 @@ void PID()
   output1 = P + I + D;
 }
 
-void posisi() {
-  if( counter != temp ){
+void posisi() 
+{
+  if( counter != temp )
+  {
     jarak = counter * (38.0/3000.0);
     jarak2 = (-1)*jarak;
-  temp = counter;
+    temp = counter;
   }
 }
 
-void ai0() {
-  if(digitalRead(3)==LOW) {
-  counter++;
-  }else{
-  counter--;
+void ai0() 
+{
+  if(digitalRead(3)==LOW) 
+  {
+    counter++;
+  }
+  else
+  {
+    counter--;
   }
 }
 
-void ai1() {
-  if(digitalRead(2)==LOW) {
-  counter--;
-  }else{
-  counter++;
+void ai1() 
+{
+  if(digitalRead(2)==LOW) 
+  {
+    counter--;
+  }
+  else
+  {
+    counter++;
   }
 }
 
